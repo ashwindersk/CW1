@@ -55,3 +55,4 @@ The reference input files for the different problems are named:
 | 1024 | 1024 | 100    | `stencil_1024_1024_100.pgm` |
 | 4096 | 4096 | 100    | `stencil_4096_4096_100.pgm` |
 | 8000 | 8000 | 100    | `stencil_8000_8000_100.pgm` |
+# CW1
