@@ -1,0 +1,5 @@
+Running on host node31-033
+Time is Tue Oct 23 19:05:41 BST 2018
+Directory is /panfs/panasas01/cosc/ak16625/versions/intro-hpc-stencil
+PBS job ID is 7590296.master.cm.cluster
+=>> PBS: job killed: walltime 618 exceeded limit 600
