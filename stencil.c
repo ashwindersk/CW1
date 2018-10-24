@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
   int niters = atoi(argv[3]);
 
   // Allocate the image
-  float *image = malloc(sizeof(float)*nx*ny);
-  float *tmp_image = malloc(sizeof(float)*nx*ny);
+  float *image = malloc(sizeof(float)*(nx+1)*(ny+1);
+  float *tmp_image = malloc(sizeof(float)*(nx+1)*(ny+1);
 
   // Set the input image
   init_image(nx, ny, image, tmp_image);
@@ -50,53 +50,67 @@ int main(int argc, char *argv[]) {
 }
 
 void stencil(const int nx, const int ny, float * restrict image, float * restrict tmp_image) {
-  //manually amending the values of the corners
- tmp_image[0]                   = 0.6f * image[0]                  + 0.1f*image[1 + ny*0]                  + 0.1f*image[0 + ny*1];
- tmp_image[nx-1 + ny*0]         = 0.6f * image[nx-1 + ny*0]        + 0.1f*image[nx-2 + ny*0]               + 0.1f*image[nx-1 + ny*1];
- tmp_image[0 + ny*(nx-1)]       = 0.6f * image[0 + ny*(ny-1)]      + 0.1f*image[0 +ny*(ny-2)]              + 0.1f*image[(1 + ny*(ny-1))];
- tmp_image[nx-1 + (ny)*(ny-1)]  = 0.6f * image[nx-1 + (ny)*(ny-1)] + 0.1f*image[nx-1 + (ny)*(nx-2)]        + 0.1f*image[nx-2 +(nx-1)*(ny)];
+//   //manually amending the values of the corners
+//  tmp_image[0]                   = 0.6f * image[0]                  + 0.1f*image[1 + ny*0]                  + 0.1f*image[0 + ny*1];
+//  tmp_image[nx-1 + ny*0]         = 0.6f * image[nx-1 + ny*0]        + 0.1f*image[nx-2 + ny*0]               + 0.1f*image[nx-1 + ny*1];
+//  tmp_image[0 + ny*(nx-1)]       = 0.6f * image[0 + ny*(ny-1)]      + 0.1f*image[0 +ny*(ny-2)]              + 0.1f*image[(1 + ny*(ny-1))];
+//  tmp_image[nx-1 + (ny)*(ny-1)]  = 0.6f * image[nx-1 + (ny)*(ny-1)] + 0.1f*image[nx-1 + (ny)*(nx-2)]        + 0.1f*image[nx-2 +(nx-1)*(ny)];
 
 
-//top row
-  for(int j = 1; j<nx-1; ++j){
-    tmp_image[j+ny*0] = 0.1f*image[j-1 + ny*0] + 0.6f*image[j+ny*0]  + 0.1f*image[j+1 + ny*0] + 0.1f*image[j+ny*1];
-  }
+// //top row
+//   for(int j = 1; j<nx-1; ++j){
+//     tmp_image[j+ny*0] = 0.1f*image[j-1 + ny*0] + 0.6f*image[j+ny*0]  + 0.1f*image[j+1 + ny*0] + 0.1f*image[j+ny*1];
+//   }
 
-  //first column
-  for(int i = 1; i< ny-1 ; ++i){
-   tmp_image[0+ny*i] = 0.6f*image[0+ny*i] + 0.1f*image[1+ ny*i] + 0.1f*image[0+ny*(i-1)] + 0.1f*image[0 + ny*(i+1)];
-  }
+//   //first column
+//   for(int i = 1; i< ny-1 ; ++i){
+//    tmp_image[0+ny*i] = 0.6f*image[0+ny*i] + 0.1f*image[1+ ny*i] + 0.1f*image[0+ny*(i-1)] + 0.1f*image[0 + ny*(i+1)];
+//   }
 
-//inner image (ny-1)*(nx-1)
-#pragma omp simd collapse(2)
-  for (int i = 1; i < ny-1; ++i) {
-    for (int j = 0; j < nx-1; ++j) {
-      tmp_image[j+i*ny] = image[j+i*ny] * 0.6f;
-      tmp_image[j+i*ny] += image[j  +(i-1)*ny] * 0.1f;
-      tmp_image[j+i*ny] += image[j  +(i+1)*ny] * 0.1f;
-      tmp_image[j+i*ny] += image[j-1+i*ny] * 0.1f;
-      tmp_image[j+i*ny] += image[j+1+i*ny] * 0.1f;
-    }
-  }
+// //inner image (ny-1)*(nx-1)
+// #pragma omp simd collapse(2)
+//   for (int i = 1; i < ny-1; ++i) {
+//     for (int j = 0; j < nx-1; ++j) {
+//       tmp_image[j+i*ny] = image[j+i*ny] * 0.6f;
+//       tmp_image[j+i*ny] += image[j  +(i-1)*ny] * 0.1f;
+//       tmp_image[j+i*ny] += image[j  +(i+1)*ny] * 0.1f;
+//       tmp_image[j+i*ny] += image[j-1+i*ny] * 0.1f;
+//       tmp_image[j+i*ny] += image[j+1+i*ny] * 0.1f;
+//     }
+//   }
 
-  //last column
-  for(int i = 1; i< ny-1 ; ++i){
-    int base  = nx-1 + ny*i;
-    tmp_image[base] = 0.6f*image[base] + 0.1f*image[base-1] + 0.1f*image[base -ny] + 0.1f*image[base + ny];
-  }
+//   //last column
+//   for(int i = 1; i< ny-1 ; ++i){
+//     int base  = nx-1 + ny*i;
+//     tmp_image[base] = 0.6f*image[base] + 0.1f*image[base-1] + 0.1f*image[base -ny] + 0.1f*image[base + ny];
+//   }
 
 
-  //last row
-  for(int j = 1; j<nx-1; ++j){
-   tmp_image[j + ny*(nx-1)] = 0.6f*image[j+ ny*(nx-1)] + 0.1f*image[(j-1)+ ny*(nx-1)] + 0.1f*image[(j+1)+ ny*(nx-1)] + 0.1f*image[j+ ny*(nx-2)];
+//   //last row
+//   for(int j = 1; j<nx-1; ++j){
+//    tmp_image[j + ny*(nx-1)] = 0.6f*image[j+ ny*(nx-1)] + 0.1f*image[(j-1)+ ny*(nx-1)] + 0.1f*image[(j+1)+ ny*(nx-1)] + 0.1f*image[j+ ny*(nx-2)];
+//   }
+// }
+
+for(int i =1 ; i< ny+1 ; i++){
+  for(int j = 1 ; j<nx+1; i++){
+    tmp_image[j+i*ny] = image[j+i*ny] * 0.6f;
+    tmp_image[j+i*ny] += image[j  +(i-1)*ny] * 0.1f
+    tmp_image[j+i*ny] += image[j  +(i+1)*ny] * 0.1f
+    tmp_image[j+i*ny] += image[j-1+i*ny] * 0.1f;
+    tmp_image[j+i*ny] += image[j+1+i*ny] * 0.1f;
   }
 }
 
+
+
+
+}
 // Create the input image
 void init_image(const int nx, const int ny, float * restrict image, float * restrict tmp_image) {
   // Zero everything
-  for (int i = 0; i < ny; ++i) {
-    for (int j = 0; j < nx; ++j) {
+  for (int i = 0; i < ny+2; ++i) {
+    for (int j = 0; j < nx+2; ++j) {
       image[j+i*ny] = 0.0;
       tmp_image[j+i*ny] = 0.0;
     }
@@ -105,10 +119,10 @@ void init_image(const int nx, const int ny, float * restrict image, float * rest
   // Checkerboard
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
-      for (int ii = i*ny/8; ii < (j+1)*ny/8; ++ii) {
-        for (int jj = j*nx/8; jj < (j+1)*nx/8; ++jj) {
+      for (int ii = i*ny/8; ii < (i+1)*ny/8; ++ii) {
+        for (int jj = j*nx/8; jj < (j+1)*nx/8 ; ++jj) {
           if ((i+j)%2)
-          image[jj+ii*ny] = 100.0;
+          image[jj+ii*ny + nx+3] = 100.0;
         }
       }
     }
