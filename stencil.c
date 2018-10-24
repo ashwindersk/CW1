@@ -53,7 +53,7 @@ void stencil(const int nx, const int ny, float * restrict image, float * restric
 
 
   for(int i =1; i< ny+1  ; i++){
-    for(int j = 1 ; j<nx+1; i++){
+    for(int j = 1 ; j<nx+1; j++){
        tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
       // tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f;
       // tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f;
