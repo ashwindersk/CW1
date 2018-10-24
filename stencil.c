@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
   free(image);
 }
 
-void stencil(const int nx, const int ny, float restrict *  image, float restrict *  tmp_image) {
+void stencil(const int nx, const int ny, float * restrict image, float * restrict tmp_image) {
   //manually amending the values of the corners
  tmp_image[0]                   = 0.6f * image[0]                  + 0.1f*image[1 + ny*0]                  + 0.1f*image[0 + ny*1];
  tmp_image[nx-1 + ny*0]         = 0.6f * image[nx-1 + ny*0]        + 0.1f*image[nx-2 + ny*0]               + 0.1f*image[nx-1 + ny*1];
@@ -92,7 +92,7 @@ void stencil(const int nx, const int ny, float restrict *  image, float restrict
 }
 
 // Create the input image
-void init_image(const int nx, const int ny, float restrict * image, float restrict * tmp_image) {
+void init_image(const int nx, const int ny, float * restrict image, float * restrict tmp_image) {
   // Zero everything
   for (int j = 0; j < ny; ++j) {
     for (int i = 0; i < nx; ++i) {
