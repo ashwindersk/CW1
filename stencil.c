@@ -92,13 +92,13 @@ void stencil(const int nx, const int ny, float * restrict image, float * restric
 //   }
 // }
 
-for(int i =1 ; i< ny+1 ; i++){
+for(int i =1; i< ny+1  ; i++){
   for(int j = 1 ; j<nx+1; i++){
-    tmp_image[j+i*ny] = image[j+i*ny] * 0.6f;
-    tmp_image[j+i*ny] += image[j  +(i-1)*ny] * 0.1f
-    tmp_image[j+i*ny] += image[j  +(i+1)*ny] * 0.1f
-    tmp_image[j+i*ny] += image[j-1+i*ny] * 0.1f;
-    tmp_image[j+i*ny] += image[j+1+i*ny] * 0.1f;
+    tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
+    tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f
+    tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f
+    tmp_image[j+i*(ny+2)] += image[j-1+i*(ny+2)] * 0.1f;
+    tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
   }
 }
 
@@ -111,8 +111,8 @@ void init_image(const int nx, const int ny, float * restrict image, float * rest
   // Zero everything
   for (int i = 0; i < ny+2; ++i) {
     for (int j = 0; j < nx+2; ++j) {
-      image[j+i*ny] = 0.0;
-      tmp_image[j+i*ny] = 0.0;
+      image[j+i*(ny+2)] = 0.0;
+      tmp_image[j+i*(ny+2)] = 0.0;
     }
   }
 
@@ -122,7 +122,7 @@ void init_image(const int nx, const int ny, float * restrict image, float * rest
       for (int ii = i*ny/8; ii < (i+1)*ny/8; ++ii) {
         for (int jj = j*nx/8; jj < (j+1)*nx/8 ; ++jj) {
           if ((i+j)%2)
-          image[jj+ii*ny + nx+3] = 100.0;
+          image[jj+ii*(ny+2) + ] = 100.0;
         }
       }
     }
@@ -146,17 +146,17 @@ void output_image(const char * file_name, const int nx, const  int ny, float *im
   // This is used to rescale the values
   // to a range of 0-255 for output
   double maximum = 0.0;
-  for (int j = 0; j < ny; ++j) {
-    for (int i = 0; i < nx; ++i) {
-      if (image[j+i*ny] > maximum)
-        maximum = image[j+i*ny];
+  for (int j = 1; j < ny+2; ++j) {
+    for (int i = 1; i < nx+2; ++i) {
+      if (image[j+i*(ny+2)] > maximum)
+        maximum = image[j+i*(ny+2)];
     }
   }
 
   // Output image, converting to numbers 0-255
-  for (int j = 0; j < ny; ++j) {
-    for (int i = 0; i < nx; ++i) {
-      fputc((char)(255.0*image[j+i*ny]/maximum), fp);
+  for (int j = 1; j < ny+2; ++j) {
+    for (int i = 1; i < nx+2; ++i) {
+      fputc((char)(255.0*image[j+i*(ny+2)]/maximum), fp);
     }
   }
 
