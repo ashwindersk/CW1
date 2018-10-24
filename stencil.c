@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
   printf(" runtime: %lf s\n", toc-tic);
   printf("------------------------------------\n");
 
-  output_image(OUTPUT_FILE, nx, ny, image);
+  //output_image(OUTPUT_FILE, nx, ny, image);
   free(image);
 }
 
@@ -54,11 +54,11 @@ void stencil(const int nx, const int ny, float * restrict image, float * restric
 
   for(int i =1; i< ny+1  ; i++){
     for(int j = 1 ; j<nx+1; i++){
-      tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
-      tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f;
-      tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f;
-      tmp_image[j+i*(ny+2)] += image[j-1+i*(ny+2)] * 0.1f;
-      tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
+      // tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
+      // tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f;
+      // tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f;
+      // tmp_image[j+i*(ny+2)] += image[j-1+i*(ny+2)] * 0.1f;
+      // tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
     }
   }
 
