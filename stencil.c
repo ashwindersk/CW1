@@ -58,7 +58,7 @@ void stencil(const int nx, const int ny, float * restrict image, float * restric
       // tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f;
       // tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f;
       // tmp_image[j+i*(ny+2)] += image[j-1+i*(ny+2)] * 0.1f;
-      tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
+      //tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
     }
   }
 
