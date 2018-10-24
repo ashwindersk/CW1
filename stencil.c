@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
   free(image);
 }
 
-void stencil(const int nx, const int ny, double *  image, double *  tmp_image) {
+void stencil(const int nx, const int ny, double restrict *  image, double restrict *  tmp_image) {
   //manually amending the values of the corners
  tmp_image[0]                   = 0.6 * image[0]                  + 0.1*image[1 + ny*0]                  + 0.1*image[0 + ny*1];
  tmp_image[nx-1 + ny*0]         = 0.6 * image[nx-1 + ny*0]        + 0.1*image[nx-2 + ny*0]               + 0.1*image[nx-1 + ny*1];
@@ -115,7 +115,7 @@ void init_image(const int nx, const int ny, double *  image, double *  tmp_image
 }
 
 // Routine to output the image in Netpbm grayscale binary image format
-void output_image(const char * file_name, const int nx, const int ny, double *image) {
+void output_image(const char * file_name, const int nx, const  int ny, double *image) {
 
   // Open output file
   FILE *fp = fopen(file_name, "w");
