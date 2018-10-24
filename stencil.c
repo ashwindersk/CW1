@@ -68,9 +68,9 @@ void stencil(const int nx, const int ny, float * restrict image, float * restric
   }
 
 //inner image (ny-1)*(nx-1)
-#pragma omp simd collapse(2)
+//#pragma omp simd collapse(2)
   for (int i = 1; i < ny-1; ++i) {
-    for (int j = 0; j < nx-1; ++j) {
+    for (int j = 1; j < nx-1; ++j) {
       tmp_image[j+i*ny] = image[j+i*ny] * 0.6f;
       tmp_image[j+i*ny] += image[j  +(i-1)*ny] * 0.1f;
       tmp_image[j+i*ny] += image[j  +(i+1)*ny] * 0.1f;
@@ -105,7 +105,7 @@ void init_image(const int nx, const int ny, float * restrict image, float * rest
   // Checkerboard
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
-      for (int ii = i*ny/8; ii < (j+1)*ny/8; ++ii) {
+      for (int ii = i*ny/8; ii < (i+1)*ny/8; ++ii) {
         for (int jj = j*nx/8; jj < (j+1)*nx/8; ++jj) {
           if ((i+j)%2)
           image[jj+ii*ny] = 100.0;
