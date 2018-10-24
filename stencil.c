@@ -50,60 +50,17 @@ int main(int argc, char *argv[]) {
 }
 
 void stencil(const int nx, const int ny, float * restrict image, float * restrict tmp_image) {
-//   //manually amending the values of the corners
-//  tmp_image[0]                   = 0.6f * image[0]                  + 0.1f*image[1 + ny*0]                  + 0.1f*image[0 + ny*1];
-//  tmp_image[nx-1 + ny*0]         = 0.6f * image[nx-1 + ny*0]        + 0.1f*image[nx-2 + ny*0]               + 0.1f*image[nx-1 + ny*1];
-//  tmp_image[0 + ny*(nx-1)]       = 0.6f * image[0 + ny*(ny-1)]      + 0.1f*image[0 +ny*(ny-2)]              + 0.1f*image[(1 + ny*(ny-1))];
-//  tmp_image[nx-1 + (ny)*(ny-1)]  = 0.6f * image[nx-1 + (ny)*(ny-1)] + 0.1f*image[nx-1 + (ny)*(nx-2)]        + 0.1f*image[nx-2 +(nx-1)*(ny)];
 
 
-// //top row
-//   for(int j = 1; j<nx-1; ++j){
-//     tmp_image[j+ny*0] = 0.1f*image[j-1 + ny*0] + 0.6f*image[j+ny*0]  + 0.1f*image[j+1 + ny*0] + 0.1f*image[j+ny*1];
-//   }
-
-//   //first column
-//   for(int i = 1; i< ny-1 ; ++i){
-//    tmp_image[0+ny*i] = 0.6f*image[0+ny*i] + 0.1f*image[1+ ny*i] + 0.1f*image[0+ny*(i-1)] + 0.1f*image[0 + ny*(i+1)];
-//   }
-
-// //inner image (ny-1)*(nx-1)
-// #pragma omp simd collapse(2)
-//   for (int i = 1; i < ny-1; ++i) {
-//     for (int j = 0; j < nx-1; ++j) {
-//       tmp_image[j+i*ny] = image[j+i*ny] * 0.6f;
-//       tmp_image[j+i*ny] += image[j  +(i-1)*ny] * 0.1f;
-//       tmp_image[j+i*ny] += image[j  +(i+1)*ny] * 0.1f;
-//       tmp_image[j+i*ny] += image[j-1+i*ny] * 0.1f;
-//       tmp_image[j+i*ny] += image[j+1+i*ny] * 0.1f;
-//     }
-//   }
-
-//   //last column
-//   for(int i = 1; i< ny-1 ; ++i){
-//     int base  = nx-1 + ny*i;
-//     tmp_image[base] = 0.6f*image[base] + 0.1f*image[base-1] + 0.1f*image[base -ny] + 0.1f*image[base + ny];
-//   }
-
-
-//   //last row
-//   for(int j = 1; j<nx-1; ++j){
-//    tmp_image[j + ny*(nx-1)] = 0.6f*image[j+ ny*(nx-1)] + 0.1f*image[(j-1)+ ny*(nx-1)] + 0.1f*image[(j+1)+ ny*(nx-1)] + 0.1f*image[j+ ny*(nx-2)];
-//   }
-// }
-
-for(int i =1; i< ny+1  ; i++){
-  for(int j = 1 ; j<nx+1; i++){
-    tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
-    tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f;
-    tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f;
-    tmp_image[j+i*(ny+2)] += image[j-1+i*(ny+2)] * 0.1f;
-    tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
+  for(int i =1; i< ny+1  ; i++){
+    for(int j = 1 ; j<nx+1; i++){
+      tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
+      tmp_image[j+i*(ny+2)] += image[j  +(i-1)*(ny+2)] * 0.1f;
+      tmp_image[j+i*(ny+2)] += image[j  +(i+1)*(ny+2)] * 0.1f;
+      tmp_image[j+i*(ny+2)] += image[j-1+i*(ny+2)] * 0.1f;
+      tmp_image[j+i*(ny+2)] += image[j+1+i*(ny+2)] * 0.1f;
+    }
   }
-}
-
-
-
 
 }
 // Create the input image
@@ -130,40 +87,40 @@ void init_image(const int nx, const int ny, float * restrict image, float * rest
 }
 
 // Routine to output the image in Netpbm grayscale binary image format
-void output_image(const char * file_name, const int nx, const  int ny, float *image) {
+// void output_image(const char * file_name, const int nx, const  int ny, float *image) {
 
-  // Open output file
-  FILE *fp = fopen(file_name, "w");
-  if (!fp) {
-    fprintf(stderr, "Error: Could not open %s\n", OUTPUT_FILE);
-    exit(EXIT_FAILURE);
-  }
+//   // Open output file
+//   FILE *fp = fopen(file_name, "w");
+//   if (!fp) {
+//     fprintf(stderr, "Error: Could not open %s\n", OUTPUT_FILE);
+//     exit(EXIT_FAILURE);
+//   }
 
-  // Ouptut image header
-  fprintf(fp, "P5 %d %d 255\n", nx, ny);
+//   // Ouptut image header
+//   fprintf(fp, "P5 %d %d 255\n", nx, ny);
 
-  // Calculate maximum value of image
-  // This is used to rescale the values
-  // to a range of 0-255 for output
-  double maximum = 0.0;
-  for (int j = 1; j < ny+1; ++j) {
-    for (int i = 1; i < nx+1; ++i) {
-      if (image[j+i*(ny+2)] > maximum)
-        maximum = image[j+i*(ny+2)];
-    }
-  }
+//   // Calculate maximum value of image
+//   // This is used to rescale the values
+//   // to a range of 0-255 for output
+//   double maximum = 0.0;
+//   for (int j = 1; j < ny+1; ++j) {
+//     for (int i = 1; i < nx+1; ++i) {
+//       if (image[j+i*(ny+2)] > maximum)
+//         maximum = image[j+i*(ny+2)];
+//     }
+//   }
 
-  // Output image, converting to numbers 0-255
-  for (int j = 1; j < ny+1; ++j) {
-    for (int i = 1; i < nx+1; ++i) {
-      fputc((char)(255.0*image[j+i*(ny+2)]/maximum), fp);
-    }
-  }
+//   // Output image, converting to numbers 0-255
+//   for (int j = 1; j < ny+1; ++j) {
+//     for (int i = 1; i < nx+1; ++i) {
+//       fputc((char)(255.0*image[j+i*(ny+2)]/maximum), fp);
+//     }
+//   }
 
-  // Close the file
-  fclose(fp);
+//   // Close the file
+//   fclose(fp);
 
-}
+// }
 
 // Get the current time in seconds since the Epoch
 double wtime(void) {
