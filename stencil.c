@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
   // Initiliase problem dimensions from command line arguments
   int nx = atoi(argv[1]);
-  int nx = atoi(argv[2]);
+  
   int niters = atoi(argv[3]);
 
   // Allocate the image
@@ -29,13 +29,13 @@ int main(int argc, char *argv[]) {
   float *tmp_image = malloc(sizeof(float)*(nx+2)*(nx+2));
 
   // Set the input image
-  init_image(nx, nx, image, tmp_image);
+  init_image(nx, image, tmp_image);
 
   // Call the stencil kernel
   double tic = wtime();
   for (int t = 0; t < niters; ++t) {
-    stencil(nx, nx, image, tmp_image);
-    stencil(nx, nx, tmp_image, image);
+    stencil( nx, image, tmp_image);
+    stencil( nx, tmp_image, image);
   }
   double toc = wtime();
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
   printf(" runtime: %lf s\n", toc-tic);
   printf("------------------------------------\n");
 
-  output_image(OUTPUT_FILE, nx, nx, image);
+  output_image(OUTPUT_FILE, nx, image);
   free(image);
 }
 
