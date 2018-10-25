@@ -1,7 +1,7 @@
 Running on host node31-031
-Time is Wed Oct 24 10:34:20 BST 2018
+Time is Thu Oct 25 01:12:15 BST 2018
 Directory is /panfs/panasas01/cosc/ak16625/versions/intro-hpc-stencil
-PBS job ID is 7594016.master.cm.cluster
+PBS job ID is 7603347.master.cm.cluster
 ------------------------------------
- runtime: 2.466086 s
+ runtime: 2.501270 s
 ------------------------------------

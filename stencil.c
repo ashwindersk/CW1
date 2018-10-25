@@ -51,7 +51,9 @@ int main(int argc, char *argv[]) {
 
 void stencil(const int nx, const int ny, float * restrict image, float * restrict tmp_image) {
 
-
+  #pragma omp simd 
+  #pragma ivdep
+  #pragma vector always
   for(int i =1; i< ny+1  ; i++){
     for(int j = 1 ; j<nx+1; j++){
       tmp_image[j+i*(ny+2)] =  image[j+i*(ny+2)] * 0.6f;
