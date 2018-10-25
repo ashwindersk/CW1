@@ -56,11 +56,11 @@ void stencil( const short nx, float * restrict image, float * restrict tmp_image
   #pragma vector always
   for(int i =1; i< nx+1  ; i++){
     for(int j = 1 ; j<nx+1; j++){
-      tmp_image[j+i*(nx+2)] =  image[j+i*(nx+2)] * 0.6f;
-      tmp_image[j+i*(nx+2)] += image[j-1+i*(nx+2)] * 0.1f;
-      tmp_image[j+i*(nx+2)] += image[j+1+i*(nx+2)] * 0.1f;
-      tmp_image[j+i*(nx+2)] += image[j  +(i-1)*(nx+2)] * 0.1f;
-      tmp_image[j+i*(nx+2)] += image[j  +(i+1)*(nx+2)] * 0.1f;
+      tmp_image[j+i*(nx+2)] =  image[j+i*(nx+2)] * 0.6f
+                             + image[j-1+i*(nx+2)] * 0.1f
+                             + image[j+1+i*(nx+2)] * 0.1f
+                             + image[j  +(i-1)*(nx+2)] * 0.1f
+                             + image[j  +(i+1)*(nx+2)] * 0.1f;
       
     }
   }
